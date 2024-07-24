@@ -1,0 +1,12 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: spark-pi-prometheus-driver
+spec:
+  selector:
+    matchLabels:
+      app: spark-pi-prometheus
+  endpoints:
+  - port: "8090"
+    path: /metrics
+    interval: 30s
