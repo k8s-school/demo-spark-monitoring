@@ -28,6 +28,8 @@ TODO: check prom conf in `conf/`
 
 Check `spark-prom/spark-pi-prometheus.yaml` then launch a pod with the above image
 
+TODO: write port-forward and curl command
+
 Work in progress in `spark-prom`
 
 See https://github.com/kubeflow/spark-operator/tree/master/examples
