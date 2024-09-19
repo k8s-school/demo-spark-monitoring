@@ -1,1 +1,9 @@
-docker build . -t fjammes/spark-pi-prom:1.1
+#!/bin/bash
+
+set -euxo pipefail
+
+tag=1.3
+image="fjammes/spark-pi-prom:$tag"
+
+docker build . -t $image
+docker push $image

@@ -11,8 +11,4 @@ RUN chmod 644 /prometheus/jmx_prometheus_javaagent-0.11.0.jar
 
 USER ${spark_uid}
 
-RUN mkdir -p /etc/metrics/conf
-COPY conf/metrics.properties /etc/metrics/conf
-COPY conf/prometheus.yaml /etc/metrics/conf
-
 ENTRYPOINT ["/opt/entrypoint.sh"]
