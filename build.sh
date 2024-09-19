@@ -1,1 +1,1 @@
-docker build . -t fjammes/spark-pi-prom:1.0
+docker build . -t fjammes/spark-pi-prom:1.1
