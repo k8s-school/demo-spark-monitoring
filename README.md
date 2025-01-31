@@ -8,13 +8,14 @@ First install prometheus:
 
 ```bash
 # serviceMonitorSelectorNilUsesHelmValues allow to monitor all serviceMonitors
-helm install --version "61.3.1" prometheus-stack prometheus-community/kube-prometheus-stack -n monitoring --set  prometheus.prometheusSpec.serviceMonitorSelectorNilUsesHelmValues=false
+helm upgrade --install --version "68.4.3" prometheus-stack prometheus-community/kube-prometheus-stack -n monitoring --set  prometheus.prometheusSpec.podMonitorSelectorNilUsesHelmValues=false --set  prometheus.prometheusSpec.serviceMonitorSelectorNilUsesHelmValues=false --create-namespace
 ```
 
-Then `ServiceMonitor-example` contains an example for a monitoring application
+Then `Prometheus` contains an example for a monitoring application
 
 ```bash
 kubectl apply -f Prometheus/ServiceMonitor-example
+kubectl apply -f Prometheus/PodMonitor-example
 ```
 
 ## Create and push a spark image which embed prometheus agent
