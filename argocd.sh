@@ -22,7 +22,7 @@ argocd login --core
 kubectl config set-context --current --namespace="$NS"
 
 APP_NAME="$CIUX_IMAGE_NAME"
-WORKBRANCH="$DEMO_SPARKMEASURE_WORKBRANCH"
+WORKBRANCH="$DEMO_SPARK_MONITORING_WORKBRANCH"
 
 argocd app create $APP_NAME --dest-server https://kubernetes.default.svc \
     --dest-namespace "$APP_NAME" \
