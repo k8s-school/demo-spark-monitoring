@@ -5,7 +5,7 @@ metadata:
   namespace: argocd
   labels:
     app.kubernetes.io/name: {{ .Values.spec.sparkAppName }}
-    app.kubernetes.io/part-of:  {{ .Chart.name }}
+    app.kubernetes.io/part-of:  {{ .Chart.Name }}
   finalizers:
   - resources-finalizer.argocd.argoproj.io
 spec:

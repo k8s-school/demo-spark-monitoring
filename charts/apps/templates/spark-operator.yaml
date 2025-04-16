@@ -5,7 +5,7 @@ metadata:
   namespace: argocd
   labels:
     app.kubernetes.io/name: spark-operator
-    app.kubernetes.io/part-of: {{ .Chart.name }}
+    app.kubernetes.io/part-of: {{ .Chart.Name }}
     app.kubernetes.io/component: operator
   finalizers:
   - resources-finalizer.argocd.argoproj.io
