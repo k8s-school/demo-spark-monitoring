@@ -1,0 +1,8 @@
+spec:
+  destination:
+    server: https://kubernetes.default.svc
+  sparkAppName: spark
+  source:
+    repoURL: https://github.com/k8s-school/demo-spark-monitoring
+    targetRevision:
+      default: nil

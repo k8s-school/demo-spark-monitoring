@@ -1,12 +1,12 @@
 apiVersion: monitoring.coreos.com/v1
 kind: PodMonitor
 metadata:
-  name: example-app-pm
+  name: spark-pi
   labels:
     team: frontend
 spec:
   selector:
     matchLabels:
-      app: example-app-pm
+      app: spark-pi-prometheus
   podMetricsEndpoints:
-  - port: web
+  - port: "8090"

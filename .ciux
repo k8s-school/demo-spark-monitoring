@@ -1,0 +1,13 @@
+apiVersion: v1alpha1
+registry: gitlab-registry.in2p3.fr/astrolabsoftware/fink
+sourcePathes:
+  - .ciux
+  - Dockerfile
+dependencies:
+  - package: github.com/k8s-school/ink@v0.0.1-rc5
+    labels:
+      itest: "true"
+  - package: github.com/k8s-school/ktbx@v1.1.4-rc7
+    labels:
+      itest: "true"
+

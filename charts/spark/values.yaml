@@ -1,0 +1,5 @@
+image:
+  pullPolicy: IfNotPresent
+  repository: gitlab-registry.in2p3.fr/astrolabsoftware/fink
+  name: demo-spark-monitoring
+  tag: "v0.0.1-rc1"
