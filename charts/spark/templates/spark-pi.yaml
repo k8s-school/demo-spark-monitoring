@@ -10,7 +10,7 @@ spec:
   sparkConf:
     spark.jars.packages: "ch.cern.sparkmeasure:spark-measure_2.12:0.24"
     spark.jars.ivy: "/tmp/ivy"
-  type: Python
+  type: Java
   mode: cluster
   image: "{{ .Values.image.repository }}/{{ .Values.image.name }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
   imagePullPolicy: "{{ .Values.image.pullPolicy }}"
