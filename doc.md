@@ -1,12 +1,12 @@
-## Monitoring Spark Applications with Prometheus and JMX Exporter
+# Monitoring Spark Applications with Prometheus and JMX Exporter
 
 Spark Operator supports exporting Spark metrics in Prometheus format using the [JMX Prometheus Exporter](https://github.com/prometheus/jmx_exporter). This allows detailed monitoring of your Spark drivers and executors with tools like Prometheus and Grafana.
 
-> 🛠️ **Note**: The older documentation in [Kubeflow's monitoring section](https://kubeflow.github.io/spark-operator/docs/user-guide.html#monitoring) is outdated and no longer works with recent Spark images. This guide provides a modern, functional example.
+> 🛠️ **Note**: The older documentation in [Kubeflow's monitoring section](https://kubeflow.github.io/spark-operator/docs/user-guide.html#monitoring) is outdated and fails with newer Spark images. This updated guide addresses [Issue #2380](https://github.com/kubeflow/spark-operator/issues/2380).
 
 ---
 
-### 1. Build a Spark Image with the JMX Exporter Jar
+## 1. Build a Spark Image with the JMX Exporter Jar
 
 Start by building a custom Docker image that includes the JMX Prometheus Java agent.
 
@@ -20,15 +20,14 @@ FROM ${SPARK_IMAGE}
 USER root
 
 # Setup for the Prometheus JMX exporter.
-# Add the Prometheus JMX exporter Java agent jar for exposing metrics sent to the JmxSink to Prometheus.
-ENV JMX_EXPORTER_AGENT_VERSION 1.1.0
+ENV JMX_EXPORTER_AGENT_VERSION=1.1.0
 ADD https://github.com/prometheus/jmx_exporter/releases/download/${JMX_EXPORTER_AGENT_VERSION}/jmx_prometheus_javaagent-${JMX_EXPORTER_AGENT_VERSION}.jar /opt/spark/jars
 RUN chmod 644 /opt/spark/jars/jmx_prometheus_javaagent-${JMX_EXPORTER_AGENT_VERSION}.jar
 
 USER ${spark_uid}
 ```
 
-Build and push your image:
+Build and push the image:
 
 ```bash
 docker build -t <your-repo>/spark-jmx:3.4.1 .
@@ -37,11 +36,11 @@ docker push <your-repo>/spark-jmx:3.4.1
 
 ---
 
-### 2. Enable JMX Exporter in Your SparkApplication YAML
+## 2. Configure the SparkApplication with Monitoring Enabled
 
-Use the `monitoring.prometheus` block to instruct the operator to launch the JMX exporter for both driver and executor containers.
+Use the `monitoring.prometheus` section to enable the JMX exporter in both the driver and executor containers.
 
-**Updated SparkApplication YAML:**
+**SparkApplication YAML example:**
 
 ```yaml
 apiVersion: "sparkoperator.k8s.io/v1beta2"
@@ -77,20 +76,13 @@ spec:
       port: 8090
 ```
 
-This config will:
-
-- Launch the JMX exporter on port `8090` inside each Spark container
-- Use the jar included in your custom image
-
-> 🚨 Ensure that the JAR path and port **match** what was used during the Docker build.
-
 ---
 
-### 3. Prometheus Configuration
+## 3. Access and Monitor Metrics
 
-Configure Prometheus to scrape the metrics exposed by the Spark pods. You can use `PodMonitor`
+### Prometheus Scraping
 
-**Basic example (ServiceMonitor):**
+Set up a `PodMonitor` or `ServiceMonitor` to scrape the metrics:
 
 ```yaml
 apiVersion: monitoring.coreos.com/v1
@@ -103,19 +95,77 @@ spec:
       - key: "spark-role"
         operator: "Exists"
   podMetricsEndpoints:
-  - port: "8090"
+    - port: "8090"
 ```
-
-Make sure your SparkApplication pods are labeled appropriately for scraping.
 
 ---
 
-### Summary
+## 4. Quick Access to Grafana and Prometheus
+
+Great addition! Here's **Chapter 4 updated** with your note, formatted as a clear **ℹ️ tip** for GitHub compatibility and readability:
+
+---
+
+## 4. Quick Access to Grafana and Prometheus
+
+Before accessing dashboards, make sure you have a Prometheus stack installed and configured.
+
+> ℹ️ **Note**: You need to install a Prometheus stack to collect and visualize metrics.
+>
+> A good option is the [kube-prometheus-stack Helm chart](https://github.com/prometheus-community/helm-charts/tree/main/charts/kube-prometheus-stack).
+>
+> In your `values.yaml`, be sure to set the following to ensure Prometheus scrapes `PodMonitor` and `ServiceMonitor` objects cluster-wide:
+>
+> ```yaml
+> serviceMonitorSelectorNilUsesHelmValues: false
+> podMonitorSelectorNilUsesHelmValues: false
+> ```
+
+### Access Grafana:
+
+```bash
+kubectl port-forward $(kubectl get pods --selector=app.kubernetes.io/name=grafana -n monitoring --output=jsonpath="{.items..metadata.name}") -n monitoring 3001:3000
+
+# Visit:
+http://localhost:3001
+# Login: admin / prom-operator
+```
+
+### Access Prometheus:
+
+```bash
+kubectl port-forward -n monitoring prometheus-prometheus-stack-kube-prom-prometheus-0 9090
+
+# Visit:
+http://localhost:9090
+```
+
+---
+
+## 5. Troubleshooting
+
+```bash
+kubectl exec -it -n spark <driver-pod-name> -- curl http://localhost:8090/metrics
+
+kubectl exec -it -n spark <driver-pod-name> -- cat /etc/metrics/conf/prometheus.yaml
+
+kubectl run -i --rm --tty shell --image=curlimages/curl -- sh
+METRIC_NAME="spark_driver_livelistenerbus_queue_streams_size_type_gauges"
+curl "http://prometheus-stack-kube-prom-prometheus.monitoring:9090/api/v1/query?query=$METRIC_NAME"
+```
+
+---
+
+## Summary
 
 | Step | Description |
 |------|-------------|
 | 1️⃣  | Build a custom Spark image with `jmx_prometheus_javaagent` |
 | 2️⃣  | Use the `monitoring.prometheus` section in your SparkApplication |
-| 3️⃣  | Configure Prometheus to scrape metrics from `8090` port |
+| 3️⃣  | Use `PodMonitor` or `ServiceMonitor` to scrape metrics |
+| 4️⃣  | Access Grafana and Prometheus via port-forward or SSH |
+| 5️⃣  | Troubleshoot with `curl` and `kubectl exec` |
 
-This updated process ensures metrics collection works reliably with the latest Spark Operator releases and resolves [Issue #2380](https://github.com/kubeflow/spark-operator/issues/2380).
+---
+
+Let me know if you want this published in a repo or need help creating a Helm chart version!
