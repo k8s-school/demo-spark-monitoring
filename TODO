@@ -1,0 +1,2 @@
+Finish https://grafana.com/grafana/dashboards/23304/edit?pg=dashboards&plcmt=usr-upload
+make the dashbard usable for all spark instances (grep for fink-broker inside it)

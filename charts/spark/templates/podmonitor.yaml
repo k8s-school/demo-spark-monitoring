@@ -10,3 +10,4 @@ spec:
       app: spark-pi-prometheus
   podMetricsEndpoints:
   - port: "8090"
+    interval: 1s
