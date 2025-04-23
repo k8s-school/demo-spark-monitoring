@@ -1,0 +1,12 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: example-podmonitor
+spec:
+  selector:
+    matchExpressions:
+      - key: "podmonitorapp"
+        operator: "Exists"
+  podMetricsEndpoints:
+  - port: "8000"
+    interval: 1s
