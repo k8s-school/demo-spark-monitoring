@@ -2,12 +2,11 @@ apiVersion: monitoring.coreos.com/v1
 kind: PodMonitor
 metadata:
   name: spark-pi
-  labels:
-    team: frontend
 spec:
   selector:
-    matchLabels:
-      app: spark-pi-prometheus
+    matchExpressions:
+      - key: "spark-role"
+        operator: "Exists"
   podMetricsEndpoints:
   - port: "8090"
     interval: 1s
