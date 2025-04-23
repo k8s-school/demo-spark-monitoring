@@ -8,5 +8,5 @@ spec:
       - key: "podmonitorapp"
         operator: "Exists"
   podMetricsEndpoints:
-  - port: "8000"
+  - port: "8080"
     interval: 1s
