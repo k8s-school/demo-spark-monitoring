@@ -15,7 +15,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "11.6.0"
+      "version": "11.5.1"
     },
     {
       "type": "datasource",
@@ -46,6 +46,7 @@
       }
     ]
   },
+  "description": "This dashboard provides a comprehensive view of Apache Spark metrics exposed via JMX, tailored for Spark applications running in a Kubernetes environment. It includes detailed visualizations of JVM memory usage, garbage collection activity, thread states, CPU load  for Spark drivers and executors. Ideal for performance tuning, troubleshooting, and maintaining cluster health.",
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
@@ -125,7 +126,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -184,32 +186,6 @@
                 }
               }
             ]
-          },
-          {
-            "__systemRef": "hideSeriesFrom",
-            "matcher": {
-              "id": "byNames",
-              "options": {
-                "mode": "exclude",
-                "names": [
-                  "fink-broker-distribution-driver",
-                  "distribute-ztf-20200101-5a4f0b9638dc2856-exec-1",
-                  "fink-broker-raw2science-driver"
-                ],
-                "prefix": "All except:",
-                "readOnly": true
-              }
-            },
-            "properties": [
-              {
-                "id": "custom.hideFrom",
-                "value": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": true
-                }
-              }
-            ]
           }
         ]
       },
@@ -239,7 +215,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.6.0",
+      "pluginVersion": "11.5.1",
       "targets": [
         {
           "datasource": {
@@ -247,7 +223,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "sum(process_open_fds{namespace=\"$namespace\", job=\"spark/fink-broker\", container!=\"\"}) by (pod)",
+          "expr": "sum(process_open_fds{namespace=\"$namespace\", container!=\"\"}) by (job, pod)",
           "legendFormat": "__auto",
           "range": true,
           "refId": "A"
@@ -317,7 +293,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -406,7 +383,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.6.0",
+      "pluginVersion": "11.5.1",
       "targets": [
         {
           "datasource": {
@@ -414,7 +391,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "rate(sum by (pod) (process_cpu_seconds_total{namespace=\"$namespace\", job=\"spark/fink-broker\", container!=\"\"})[1m:])",
+          "expr": "rate(sum by (job, pod) (process_cpu_seconds_total{namespace=\"$namespace\", container!=\"\"})[1m:])",
           "legendFormat": "__auto",
           "range": true,
           "refId": "A"
@@ -484,7 +461,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -543,32 +521,6 @@
                 }
               }
             ]
-          },
-          {
-            "__systemRef": "hideSeriesFrom",
-            "matcher": {
-              "id": "byNames",
-              "options": {
-                "mode": "exclude",
-                "names": [
-                  "distribute-ztf-20200101-5a4f0b9638dc2856-exec-1",
-                  "raw2science-ztf-20200101-06c0a39638dc26f7-exec-1",
-                  "fink-broker-raw2science-driver"
-                ],
-                "prefix": "All except:",
-                "readOnly": true
-              }
-            },
-            "properties": [
-              {
-                "id": "custom.hideFrom",
-                "value": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": true
-                }
-              }
-            ]
           }
         ]
       },
@@ -598,7 +550,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.6.0",
+      "pluginVersion": "11.5.1",
       "targets": [
         {
           "datasource": {
@@ -606,7 +558,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "avg_over_time(sum(jvm_memory_pool_used_bytes{namespace=\"$namespace\", job=\"spark/fink-broker\", container!=\"\"}) by (pod)[10m:]) / 1024 /1024",
+          "expr": "avg_over_time(sum(jvm_memory_pool_used_bytes{namespace=\"$namespace\", container!=\"\"}) by (job, pod)[10m:]) / 1024 /1024",
           "legendFormat": "__auto",
           "range": true,
           "refId": "A"
@@ -663,7 +615,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -751,7 +704,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "11.6.0",
+      "pluginVersion": "11.5.1",
       "targets": [
         {
           "datasource": {
@@ -759,7 +712,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "avg_over_time(sum(jvm_memory_used_bytes{namespace=\"$namespace\", job=\"spark/fink-broker\", container!=\"\"}) by (pod)[10m:]) / 1024 / 1024",
+          "expr": "avg_over_time(sum(jvm_memory_used_bytes{namespace=\"$namespace\", container!=\"\"}) by (job, pod)[10m:]) / 1024 / 1024",
           "legendFormat": "__auto",
           "range": true,
           "refId": "A"
@@ -816,7 +769,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -912,7 +866,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "sum(jvm_memory_pool_allocated_bytes_total{namespace=\"$namespace\", job=\"spark/fink-broker\", container!=\"\"}) by (pod) / 1024 / 1024",
+          "expr": "sum(jvm_memory_pool_allocated_bytes_total{namespace=\"$namespace\", container!=\"\"}) by (job, pod) / 1024 / 1024",
           "legendFormat": "__auto",
           "range": true,
           "refId": "A"
@@ -982,7 +936,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -1078,7 +1033,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "sum(jvm_gc_collection_seconds_sum{namespace=\"$namespace\", job=\"spark/fink-broker\", container!=\"\"}) by (pod)",
+          "expr": "sum(jvm_gc_collection_seconds_sum{namespace=\"$namespace\", container!=\"\"}) by (job,pod)",
           "legendFormat": "__auto",
           "range": true,
           "refId": "A"
@@ -1148,7 +1103,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -1244,7 +1200,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "sum(jvm_classes_loaded_total{namespace=\"$namespace\", job=\"spark/fink-broker\", container!=\"\"}) by (pod)",
+          "expr": "sum(jvm_classes_loaded_total{namespace=\"$namespace\", container!=\"\"}) by (job, pod)",
           "legendFormat": "__auto",
           "range": true,
           "refId": "A"
@@ -1301,7 +1257,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -1397,7 +1354,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "sum(jvm_classes_currently_loaded{namespace=\"$namespace\", job=\"spark/fink-broker\", container!=\"\"}) by (pod)",
+          "expr": "sum(jvm_classes_currently_loaded{namespace=\"$namespace\", container!=\"\"}) by (job, pod)",
           "legendFormat": "__auto",
           "range": true,
           "refId": "A"
@@ -1408,9 +1365,11 @@
     }
   ],
   "refresh": "10s",
-  "schemaVersion": 41,
+  "schemaVersion": 40,
   "tags": [
-    "kubernetes-mixin"
+    "kubernetes-mixin",
+    "spark",
+    "jmx"
   ],
   "templating": {
     "list": [
@@ -1464,12 +1423,12 @@
     ]
   },
   "time": {
-    "from": "now-2d",
+    "from": "now-1h",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "utc",
-  "title": "JMX for Spark",
+  "title": "Apache Spark JMX Insights",
   "uid": "6581e46e4e5c7ba40a07646395ef7b23xxxy",
   "version": 1,
   "weekStart": ""

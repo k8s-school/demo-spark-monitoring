@@ -95,7 +95,7 @@ spec:
       - key: "spark-role"
         operator: "Exists"
   podMetricsEndpoints:
-    - port: "8090"
+    - port: jmx-exporter
 ```
 
 ---
