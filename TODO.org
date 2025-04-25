@@ -1,0 +1,13 @@
+* TODO investigate other dashboards
+-  https://grafana.com/grafana/dashboards/7890-spark-performance-metrics/ (obsolete)
+- https://grafana.com/docs/grafana-cloud/monitor-infrastructure/integrations/integration-reference/integration-spark/ (non free)
+- https://github.com/cerndb/spark-dashboard/tree/master (is it working with kubernetes)
+  based on https://spark.apache.org/docs/latest/monitoring.html#component-instance--driver
+- https://grafana.com/grafana/dashboards/14845-jmx-dashboard-basic/ (jmx only)
+
+
+* TODO 2 docs for spark-operator ??
+- https://kubeflow.github.io/spark-operator/
+- kubeflow.org/docs/components/spark-operator/
+
+* TODO grafana URL does not work: https://grafana.com/grafana/dashboards/23304
