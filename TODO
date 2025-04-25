@@ -1,4 +1,0 @@
-Finish https://grafana.com/grafana/dashboards/23304/edit?pg=dashboards&plcmt=usr-upload
-make the dashbard usable for all spark instances (grep for fink-broker inside it)
-
-process_open_fds{container="spark-kubernetes-driver", endpoint="jmx-exporter", instance="10.244.0.36:8090", job="spark/spark-pi", namespace="spark", pod="spark-pi-driver"}
