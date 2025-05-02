@@ -98,14 +98,6 @@ spec:
     - port: jmx-exporter
 ```
 
----
-
-## 4. Quick Access to Grafana and Prometheus
-
-Great addition! Here's **Chapter 4 updated** with your note, formatted as a clear **ℹ️ tip** for GitHub compatibility and readability:
-
----
-
 ## 4. Quick Access to Grafana and Prometheus
 
 Before accessing dashboards, make sure you have a Prometheus stack installed and configured.
@@ -129,6 +121,9 @@ kubectl port-forward $(kubectl get pods --selector=app.kubernetes.io/name=grafan
 # Visit:
 http://localhost:3001
 # Login: admin / prom-operator
+
+# Then import dashboard inside Grafana https://grafana.com/grafana/dashboards/23304
+# Dashboard ID is: 23304
 ```
 
 ### Access Prometheus:
@@ -140,21 +135,20 @@ kubectl port-forward -n monitoring prometheus-prometheus-stack-kube-prom-prometh
 http://localhost:9090
 ```
 
----
-
 ## 5. Troubleshooting
 
 ```bash
+# Check prometheus exporter behavior
 kubectl exec -it -n spark <driver-pod-name> -- curl http://localhost:8090/metrics
 
+# Access prometheus exporter configuration
 kubectl exec -it -n spark <driver-pod-name> -- cat /etc/metrics/conf/prometheus.yaml
 
+# Check metrics are avaible inside Prometheus database
 kubectl run -i --rm --tty shell --image=curlimages/curl -- sh
 METRIC_NAME="spark_driver_livelistenerbus_queue_streams_size_type_gauges"
 curl "http://prometheus-stack-kube-prom-prometheus.monitoring:9090/api/v1/query?query=$METRIC_NAME"
 ```
-
----
 
 ## Summary
 
@@ -165,7 +159,3 @@ curl "http://prometheus-stack-kube-prom-prometheus.monitoring:9090/api/v1/query?
 | 3️⃣  | Use `PodMonitor` or `ServiceMonitor` to scrape metrics |
 | 4️⃣  | Access Grafana and Prometheus via port-forward or SSH |
 | 5️⃣  | Troubleshoot with `curl` and `kubectl exec` |
-
----
-
-Let me know if you want this published in a repo or need help creating a Helm chart version!
